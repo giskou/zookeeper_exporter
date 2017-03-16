@@ -19,4 +19,4 @@ In exhibitor mode, the exporter will automatically discover servers by querying 
 
 An example run uzing docker:
 
-    docker run -d -p 9114:9114 bergerx/zookeeper_exporter zkserver1:2181 zkserver2:2181 zkserver3:2181
+    docker run -d -p 9114:9114 infonova/zookeeper_exporter zkserver1:2181 zkserver2:2181 zkserver3:2181
