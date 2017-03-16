@@ -15,6 +15,7 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/log"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type Servers struct {
@@ -201,8 +202,7 @@ func main() {
 	flag.Parse()
 	exporter := newZooKeeperExporter(flag.Args(), *useExhibitor)
 	prometheus.MustRegister(exporter)
-
-	http.Handle(*metricPath, prometheus.Handler())
+	http.Handle(*metricPath, promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, *metricPath, http.StatusMovedPermanently)
 	})
