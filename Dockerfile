@@ -1,6 +1,14 @@
-FROM golang:1.7-alpine
-COPY . /zookeeper_exporter
-WORKDIR /zookeeper_exporter
-RUN apk --no-cache add --update git && go get -d && go build && apk del git pcre expat libcurl libssh2
+FROM golang as build
+
+COPY . /build
+WORKDIR /build
+
+RUN go get -d
+RUN go build -o zookeeper_exporter
+
+FROM gcr.io/distroless/base
+
+COPY --from=build /build/zookeeper_exporter /bin/zookeeper_exporter
+
 EXPOSE 9114
-ENTRYPOINT ["/zookeeper_exporter/zookeeper_exporter"]
+ENTRYPOINT ["/bin/zookeeper_exporter"]
